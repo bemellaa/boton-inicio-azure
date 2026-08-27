@@ -9,7 +9,7 @@ function App() {
 
   return (
     <div style={{ padding: '40px', fontFamily: 'Arial, sans-serif', maxWidth: '800px', margin: '0 auto' }}>
-      <h1>Dashboard Frontend - Arquitectura Cloud OIDC</h1>
+      <h2>Dashboard Frontend - Arquitectura Cloud OIDC</h2>
       <hr style={{ margin: '20px 0' }} />
 
       <div style={{ marginBottom: '20px' }}>
