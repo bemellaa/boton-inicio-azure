@@ -7,7 +7,7 @@ import { apiRequest } from "./auth/AuthConfig";
 // Ruta relativa "/api/v1": el proxy de Vite (vite.config.js) la reenvia a
 // http://localhost:8080 evitando CORS. NO poner "localhost:8080/..." aqui,
 // fetch lo interpretaria como URL invalida dentro del origen del frontend.
-const backendUrl = import.meta.env.VITE_API_URL || "http://localhost:8080/api/v1";
+const backendUrl = import.meta.env.VITE_API_URL || "https://0t16t89h07.execute-api.us-east-1.amazonaws.com/desarrallo";
 
 export function TokenSender() {
     const { instance, accounts } = useMsal();
