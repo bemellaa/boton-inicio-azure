@@ -8,30 +8,6 @@ import { PublicClientApplication, EventType } from "@azure/msal-browser";
 import { MsalProvider } from "@azure/msal-react";
 import { msalConfig } from "./auth/AuthConfig";
 
-// =====================================================================
-// Simula window.crypto.subtle para entornos HTTP en IP
-// =====================================================================
-try {
-  if (typeof window !== 'undefined' && window.crypto) {
-    if (!window.crypto.subtle) {
-      Object.defineProperty(window.crypto, 'subtle', {
-        value: {
-          digest: async (algo, data) => new ArrayBuffer(32),
-          generateKey: async () => ({}),
-          sign: async () => new ArrayBuffer(32),
-          verify: async () => true,
-          encrypt: async () => new ArrayBuffer(32),
-          decrypt: async () => new ArrayBuffer(32),
-        },
-        configurable: true,
-        writable: true,
-      });
-    }
-  }
-} catch (e) {
-  console.warn("No se pudo parchear crypto.subtle:", e);
-}
-// =====================================================================
 
 const msalInstance = new PublicClientApplication(msalConfig);
 

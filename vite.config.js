@@ -8,5 +8,5 @@ import { defineConfig } from 'vite'
 // permite SecurityConfig#corsConfigurationSource del backend.
 export default defineConfig({
   plugins: [react()],
-  base: '/desarrollo/'
+  base: './'
 })
