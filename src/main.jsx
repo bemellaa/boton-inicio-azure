@@ -11,20 +11,25 @@ import { msalConfig } from "./auth/AuthConfig";
 // =====================================================================
 // Simula window.crypto.subtle para entornos HTTP en IP
 // =====================================================================
-if (typeof window !== 'undefined' && (!window.crypto || !window.crypto.subtle)) {
-  window.crypto = window.crypto || {};
-  window.crypto.subtle = {
-    digest: async (algo, data) => {
-      // Stub seguro básico para permitir pasar la validación inicial de MSAL
-      const msgBuffer = new TextEncoder().encode("msal-http-mock");
-      return crypto.subtle ? await crypto.subtle.digest(algo, data) : msgBuffer.buffer;
-    },
-    generateKey: async () => ({}),
-    sign: async () => new ArrayBuffer(32),
-    verify: async () => true,
-    encrypt: async () => new ArrayBuffer(32),
-    decrypt: async () => new ArrayBuffer(32),
-  };
+try {
+  if (typeof window !== 'undefined' && window.crypto) {
+    if (!window.crypto.subtle) {
+      Object.defineProperty(window.crypto, 'subtle', {
+        value: {
+          digest: async (algo, data) => new ArrayBuffer(32),
+          generateKey: async () => ({}),
+          sign: async () => new ArrayBuffer(32),
+          verify: async () => true,
+          encrypt: async () => new ArrayBuffer(32),
+          decrypt: async () => new ArrayBuffer(32),
+        },
+        configurable: true,
+        writable: true,
+      });
+    }
+  }
+} catch (e) {
+  console.warn("No se pudo parchear crypto.subtle:", e);
 }
 // =====================================================================
 
