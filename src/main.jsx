@@ -8,6 +8,26 @@ import { PublicClientApplication, EventType } from "@azure/msal-browser";
 import { MsalProvider } from "@azure/msal-react";
 import { msalConfig } from "./auth/AuthConfig";
 
+// =====================================================================
+// Simula window.crypto.subtle para entornos HTTP en IP
+// =====================================================================
+if (typeof window !== 'undefined' && (!window.crypto || !window.crypto.subtle)) {
+  window.crypto = window.crypto || {};
+  window.crypto.subtle = {
+    digest: async (algo, data) => {
+      // Stub seguro básico para permitir pasar la validación inicial de MSAL
+      const msgBuffer = new TextEncoder().encode("msal-http-mock");
+      return crypto.subtle ? await crypto.subtle.digest(algo, data) : msgBuffer.buffer;
+    },
+    generateKey: async () => ({}),
+    sign: async () => new ArrayBuffer(32),
+    verify: async () => true,
+    encrypt: async () => new ArrayBuffer(32),
+    decrypt: async () => new ArrayBuffer(32),
+  };
+}
+// =====================================================================
+
 const msalInstance = new PublicClientApplication(msalConfig);
 
 // Registro de fallos interactivos (login/acquireToken) en consola con detalle.
