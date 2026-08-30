@@ -14,7 +14,7 @@ RUN npm install
 # Copiamos el resto del código fuente
 COPY . .
 
-# Generamos el build de producción (asegúrate de tener base: './' en tu vite.config.js si aplica)
+# Generamos el build de producción
 RUN npm run build
 
 
@@ -29,7 +29,7 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # Copiamos nuestra configuración personalizada de Nginx
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Exponemos el puerto 80 para que el NLB/ALB de AWS pueda conectarse
+# Exponemos el puerto 80
 EXPOSE 80
 
 # Arrancamos Nginx en primer plano
